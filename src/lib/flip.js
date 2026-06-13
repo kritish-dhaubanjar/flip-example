@@ -16,7 +16,7 @@ export default class Flip {
   }
 
   measure() {
-    return Array.from(document.querySelectorAll(this.selector)).map(this.rect)
+    return Array.from(document.querySelectorAll(this.selector)).map((el) => this.rect(el))
   }
 
   absolute(el, to) {

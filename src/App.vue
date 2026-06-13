@@ -8,12 +8,20 @@
     <div class="grid__container" />
     <div class="grid__container" />
   </div>
+
+  <br />
+  <button @click="shuffle">Shuffle</button>
+  <ul>
+    <li v-for="vowel in vowels" :key="vowel">{{ vowel }}</li>
+  </ul>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 
 import Flip from './lib/flip.js'
+
+const vowels = ref(['A', 'E', 'I', 'O', 'U'])
 
 const classNames = [
   'grid-template-areas-1',
@@ -37,6 +45,24 @@ const toggle = async () => {
 
     toggle()
   }
+}
+
+const shuffle = async () => {
+  const flip = new Flip('li')
+
+  const from = flip.measure()
+
+  vowels.value.reverse()
+
+  await nextTick()
+
+  const to = flip.measure()
+
+  from.forEach((f) => {
+    const t = to.find((x) => x.el === f.el)
+
+    flip.invert(f.el, f, t, { duration: 500 })
+  })
 }
 </script>
 
